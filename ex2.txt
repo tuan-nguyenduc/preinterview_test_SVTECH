@@ -1,0 +1,31 @@
+Monitoring resource utilization is crucial for maintaining the health, performance, and stability of a tech stack. 
+A comprehensive monitoring system should cover various aspects such as CPU usage, memory usage, disk space, network traffic, application performance metrics, and more.
+Here's some ideas to monitor the resource utilization of a Tech Stack:
+1. Metrics Collection Agents: 
+- Install monitoring agents on each server or node in the tech stack.
+- Agents collect system-level metrics such as CPU, memory, disk usage, and network traffic.
+- Examples: Prometheus Node Exporter
+
+2. Application Monitoring:
+- Instrument applications to capture application-specific metrics.
+- Monitor metrics like response times, error rates, database query performance,...
+- Integration with application frameworks and libraries for detailed insights.
+- Examples: Prometheus with custom exporters
+
+3. Log Aggregation:
+- Collect and aggregate logs from various services and applications.
+- Centralize logs for easier troubleshooting and analysis.
+- Allows correlation of logs with metrics for deeper insights.
+- Examples: Elasticsearch, Logstash
+
+4. Visualization and Dashboarding:
+- Tools to create visual representations of collected metrics.
+- Create dashboards for real-time monitoring and historical analysis.
+- Customizable dashboards for different teams and use cases.
+- Examples: Grafana, Kibana.
+
+5. Alerting and Notification:
+- Set up alerts based on predefined thresholds.
+- Receive notifications via email when thresholds are exceeded.
+- Proactive alerting to address issues before they impact users.
+- Examples: Prometheus Alertmanager, Grafana alerts.

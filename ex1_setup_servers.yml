@@ -1,0 +1,85 @@
+---
+- name: Setup base servers for production
+  hosts: 192.168.1.1
+  become: true
+  vars:
+    sysadmin_user: sysadmin
+    hostname: tuanndhost
+    log_file: /var/log/user-commands.log
+    docker_log_driver: json-file
+    docker_storage_driver: overlay2
+
+  tasks:
+    - name: Create sysadmin user with sudo privileges
+      user:
+        name: "{{ sysadmin_user }}"
+        groups: sudo
+        append: yes
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Set hostname
+      hostname:
+        name: "{{ hostname }}"
+      become: yes
+
+    - name: Update and upgrade packages
+      apt:
+        upgrade: yes
+        update_cache: yes
+      become: yes
+
+    - name: Install necessary packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - docker.io
+        - auditd
+      become: yes
+
+    - name: Configure Docker daemon
+      copy:
+        dest: /etc/docker/daemon.json
+        content: |
+          {
+            "log-driver": "{{ docker_log_driver }}",
+            "storage-driver": "{{ docker_storage_driver }}"
+          }
+      notify: restart docker
+
+    - name: Enable and start Docker service
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+      become: yes
+
+    - name: Tune server for high network traffic
+      sysctl:
+        name: "{{ item }}"
+        value: 1
+        state: present
+        reload: yes
+      with_items:
+        - net.core.somaxconn
+        - net.ipv4.tcp_syncookies
+        - net.ipv4.tcp_fin_timeout
+        - net.ipv4.tcp_keepalive_time
+      become: yes
+
+    - name: Create log file for user commands
+      file:
+        path: "{{ log_file }}"
+        state: touch
+        mode: '0644'
+
+    - name: Enable auditd for logging user commands
+      command: auditctl -w "{{ log_file }}" -p wa -k user-commands
+      become: yes
+
+  handlers:
+    - name: restart docker
+      systemd:
+        name: docker
+        state: restarted

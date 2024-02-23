@@ -1,0 +1,55 @@
+When receiving an alert that a service is down or slow, it's crucial to act quickly to investigate and resolve the issue.
+1. My steps to resolve the problem:
+- Upon receiving the alert, acknowledge it to indicate that it's being looked into.
+- Check Monitoring Dashboard:
+    + Log into the monitoring dashboard (e.g. Grafana) to get an overview of the service's metrics.
+    + Look for any anomalies or spikes in CPU usage, memory usage, response times,...
+- Check Service Status: 
+    + Connect to the server hosting the service (SSH or remote desktop).
+    + Verify the status of the service using system commands or service-specific commands: systemctl status "service name"
+    + Ensure the service is running and active.
+- Review Logs:
+    + Check service logs for errors or warnings that might indicate the issue.
+    + Look for any specific error messages or stack traces.
+- Check Dependencies:
+    + Some services rely on external dependencies (e.g. database, APIs)
+    + Verify the connectivity and status of these dependencies.
+    + Check if there are any issues with database connections, API endpoints,...
+- Restart the Service:
+    + If the service is not responding or is stuck, attempt to restart it.
+    + Use the appropriate command to restart the service: sudo systemctl restart "service name"
+- Monitor and Verify Recovery:
+    + After restarting, monitor the service to ensure it comes back online and is functioning correctly.
+    + Check the monitoring dashboard for updated metrics and confirm the service's stability.
+- Investigate Root Cause:
+    + If the issue persists or if it's a recurring problem, perform a deeper investigation into the root cause.
+    + Analyze logs, metrics, and any recent changes or deployments.
+    + Use debugging tools or commands specific to the service to gather more information.
+- Implement Fixes:
+    + Based on the root cause analysis, implement necessary fixes.
+    + This could involve applying patches, adjusting configurations, optimizing code,...
+    + Ensure proper testing in a staging environment before applying changes in production.
+- Document and Communicate:
+    + Document the steps taken, including the issue, resolution, and preventive measures.
+    + Share the incident report with the team for knowledge sharing and future reference.
+
+2. My steps to prevent the problem:
+- Automated Monitoring and Alerts:
+    + Set up proactive monitoring with alerting for critical metrics (CPU, memory, response time thresholds).
+    + Configure alerts to notify immediately when thresholds are breached.
+    + Utilize monitoring tools like Prometheus, Nagios, or Datadog for this purpose.
+- Regular Health Checks and Maintenance:
+    + Schedule regular health checks for services and dependencies.
+    + Perform routine maintenance tasks such as cleaning up logs, optimizing databases,...
+- Load Testing and Capacity Planning:
+    + Conduct load testing to simulate high traffic scenarios and identify potential bottlenecks.
+    + Plan for capacity upgrades or scaling based on load testing results.
+- Configuration Management:
+    + Use configuration management tools (e.g., Ansible, Puppet) to ensure consistent and reproducible configurations.
+    + Version control configurations and changes for easy rollback and review.
+-  Backup and Disaster Recovery:
+    + Implement regular backups of critical data and configurations.
+    + Have a well-defined disaster recovery plan in place in case of catastrophic failures.
+- Continuous Improvement:
+    + Conduct post-incident reviews to analyze incidents and identify areas for improvement.
+    + Implement lessons learned from incidents to prevent similar issues in the future.
